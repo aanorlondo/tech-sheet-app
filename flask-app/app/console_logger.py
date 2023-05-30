@@ -1,7 +1,7 @@
 import logging
 
 # Create a logger
-logger = logging.getLogger("app_details_logger")
+logger = logging.getLogger("APP_DETAILS_API")
 logger.setLevel(logging.DEBUG)
 
 # Create a handler for console output

@@ -2,8 +2,7 @@
 
 source prepare_env.sh
 
-
-docker rmi Anegan/appdetails_api:local
+docker rmi -f negan/appdetails_api:local
 docker build -t negan/appdetails_api:local ../flask-app
 docker push negan/appdetails_api:local
 

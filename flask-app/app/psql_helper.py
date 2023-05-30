@@ -52,7 +52,7 @@ ID_FIELD = "app_id"
 URL_FIELD = "url"
 NAME_FIELD = "name"
 DESC_FIELD = "description"
-FRONT_FIELD = "front_technology"
+FRONT_FIELD = "frontend_technology"
 BACK_FIELD = "backend_technology"
 DB_FIELD = "database_technology"
 AUTHOR_FIELD = "author"
@@ -105,15 +105,15 @@ def generate_create_app_request(
         {GITHUB_FIELD}
     )
     VALUES (
-        {app_id},
-        {url},
-        {name},
-        {description},
-        {frontend_technology},
-        {backend_technology},
-        {databaase_technology},
-        {author},
-        {github_url}
+        '{app_id}',
+        '{url}',
+        '{name}',
+        '{description}',
+        '{frontend_technology}',
+        '{backend_technology}',
+        '{databaase_technology}',
+        '{author}',
+        '{github_url}'
     )
     """
 
@@ -141,7 +141,7 @@ def generate_get_app_request(app_id: str) -> str:
     FROM
         {get_psql_table_name()}
     WHERE
-        {ID_FIELD} = {app_id};
+        {ID_FIELD} = '{app_id}';
     """
 
 
@@ -160,7 +160,7 @@ def genenerate_count_entries_request(app_id: str) -> str:
     FROM
         {get_psql_table_name()}
     WHERE
-        {ID_FIELD} = {app_id}
+        {ID_FIELD} = '{app_id}'
     """
 
 
@@ -195,14 +195,14 @@ def generate_update_app_request(
     return f"""
     UPDATE {get_psql_table_name()}
     SET
-        {URL_FIELD} = {url},
-        {NAME_FIELD} = {name},
-        {DESC_FIELD} = {description},
-        {FRONT_FIELD} = {frontend_technology},
-        {BACK_FIELD} = {backend_technology},
-        {DB_FIELD} = {databaase_technology},
-        {AUTHOR_FIELD} = {author}, 
-        {GITHUB_FIELD} = {github_url}
+        {URL_FIELD} = '{url}',
+        {NAME_FIELD} = '{name}',
+        {DESC_FIELD} = '{description}',
+        {FRONT_FIELD} = '{frontend_technology}',
+        {BACK_FIELD} = '{backend_technology}',
+        {DB_FIELD} = '{databaase_technology}',
+        {AUTHOR_FIELD} = '{author}', 
+        {GITHUB_FIELD} = '{github_url}'
     WHERE
-        {ID_FIELD} = {app_id}
+        {ID_FIELD} = '{app_id}'
     """

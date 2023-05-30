@@ -1,9 +1,10 @@
 #!/bin/bash
 
+source prepare_env.sh
+
 # Read the setup_with_vars.sql file
-input_sql_file="../postgresql-db/setup_with_vars.sql"
-output_sql_file="../postgresql-db/setup.sql"
-sql_content=$(cat "$input_sql_file")
+input_sql_file_path="../postgresql-db/setup_template.sql"
+output_sql_file_path="../postgresql-db/setup.sql"
 
 # Replace the environment variable placeholders with their values
-eval "echo \"$sql_content\"" | envsubst > "$output_sql_file"
+envsubst < $input_sql_file_path > $output_sql_file_path
