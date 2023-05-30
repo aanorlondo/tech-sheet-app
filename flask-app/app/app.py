@@ -1,4 +1,6 @@
+import os
 from flask import Flask, request
+from flask_cors import CORS
 from psql_helper import (
     connect_to_db,
     generate_get_app_request,
@@ -18,6 +20,7 @@ from psql_helper import (
 from console_logger import logger
 
 app = Flask(__name__)
+CORS(app)
 
 
 def make_response(status: str, message: str, data: dict | list = None) -> dict:

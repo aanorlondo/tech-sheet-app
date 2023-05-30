@@ -1,4 +1,3 @@
 flask
-flask_restful
-flask_restful_swagger
+flask-cors
 psycopg2-binary==2.9.6 
