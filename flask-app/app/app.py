@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from psql_helper import (
     connect_to_db,
     generate_get_app_request,
@@ -33,37 +33,21 @@ def make_response(status: str, message: str, data: dict | list = None) -> dict:
 
 # GET /
 @app.route("/", methods=["GET"])
-def get_default():
-    """
-    Default route. Displays welcome message.
-    """
-    message = """
-    Welcome to App-Details API
-    Available routes are :
-    - GET /         : display this message
-    - GET /<app_id> : fetch data for a given app_id
-    - POST /        : set values for given app_id (values and id in body)
-    """
-    logger.info("Called API with empty body.")
-    return (
-        make_response(
-            status="success",
-            message=message,
-        ),
-        200,
-    )
-
-
-# GET /{app_id}
-@app.route("/<app_id>", methods=["GET"])
-def get_app_details(app_id):
+def get_app_details():
     """
     Get the details of an app with the given ID.
     Args:
-        app_id (str): ID of the app.
+        app_id (str): ID of the app. Given as query param
     Returns:
         dict: Dictionary containing the details of the app. If the app does not exist, returns None.
     """
+    app_id = request.args.get("app_id")
+
+    if not app_id:
+        message = "Missing 'app_id' parameter."
+        logger.info(message)
+        return make_response(status="fail", message=message), 400
+
     logger.info(f"Received GET/app-details for ID: {app_id}...")
     try:
         logger.info((f"Connecting to DB..."))
@@ -104,21 +88,27 @@ def get_app_details(app_id):
 
 # POST /{body}
 @app.route("/", methods=["POST"])
-def update_app_details(body: dict):
+def update_app_details():
     """
     Set or update the details of an app with the given ID.
     Args:
-        body (dict): App details to be updated or created, including the app_id.
+        body (dict): App details to be updated or created, including the app_id. Given as request json.
     Returns:
         dict: Dictionary indicating the success or failure of the operation.
     """
-    logger.info(f"Received POST/body={body}")
+    body = request.json
 
+    if not body:
+        message = "Missing request body."
+        logger.error(message)
+        return make_response(status="fail", message=message), 400
+
+    logger.info(f"Received POST/body={body}")
     app_id = body.get(ID_FIELD)
     if not app_id:
-        message = "ERROR: Missing app_id in the request body."
+        message = "Missing app_id in the request body."
         logger.error(message)
-        return (make_response(status="fail", message=message), 400)
+        return make_response(status="fail", message=message), 400
 
     try:
         logger.info(f"Checking Apps with ID={app_id}...")
