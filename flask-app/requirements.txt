@@ -1,0 +1,4 @@
+flask
+flask_restful
+flask_restful_swagger
+psycopg2-binary==2.9.6 
