@@ -1,5 +1,5 @@
-import os
-from flask import Flask, request
+from flask_swagger_ui import get_swaggerui_blueprint
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from psql_helper import (
     connect_to_db,
@@ -18,6 +18,7 @@ from psql_helper import (
     GITHUB_FIELD,
 )
 from console_logger import logger
+import json
 
 app = Flask(__name__)
 CORS(app)
@@ -32,6 +33,26 @@ def make_response(status: str, message: str, data: dict | list = None) -> dict:
         "message": message,
         "data": data,
     }
+
+
+# SWAGGER UI
+SWAGGER_URL = "/appdetails-swagger"
+API_URL = "/appdetails-api/api.json"
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        "app_name": "Python/Flask AppDetails API",
+    },
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
+
+# SWAGGER UI API DOC
+@app.route("/api.json")
+def api_docs():
+    with open("api/api.json", "r") as f:
+        return jsonify(json.load(f))
 
 
 # GET /
