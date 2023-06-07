@@ -16,6 +16,7 @@ docker run \
     -e PSQL_TABLE=${PSQL_TABLE} \
     -e PSQL_USER=${PSQL_USER} \
     -e PSQL_PSWD=${PSQL_PSWD} \
+    -e AUTH_SERVER=${AUTH_SERVER} \
     -p 3500:3500 \
     --name APPDETAILS-API-LOCAL \
     negan/appdetails_api:local

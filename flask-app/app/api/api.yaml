@@ -5,6 +5,14 @@ info:
   description: Python/Flask API to Get and Set Appdetails for technical sheets
 servers:
   - url: "https://macbookpro-de-khaled.lan/appdetails-api"
+
+components:
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
 paths:
   /:
     get:
@@ -63,6 +71,8 @@ paths:
       tags:
         - Apps
       summary: Update app details
+      security:
+        - JWTAuth: []
       requestBody:
         required: true
         content:
@@ -91,6 +101,17 @@ paths:
       responses:
         "200":
           description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+        "403":
+          description: Unauthorized
           content:
             application/json:
               schema:

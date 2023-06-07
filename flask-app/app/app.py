@@ -1,3 +1,5 @@
+import os, json
+import requests
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -18,8 +20,8 @@ from psql_helper import (
     GITHUB_FIELD,
 )
 from console_logger import logger
-import json
 
+AUTH_SERVER = os.environ.get("AUTH_SERVER")
 app = Flask(__name__)
 CORS(app)
 
@@ -122,6 +124,32 @@ def update_app_details():
     """
     body = request.json
 
+    # Make a request to the Go-Auth server to verify permissions
+    try:
+        response = requests.get(
+            f"{AUTH_SERVER}/user/check",
+            headers={"Authorization": request.headers.get("Authorization")},
+            verify=False,  # bypass self-signed SSL cert rejection
+        )
+        if response.status_code == 200:
+            # User has enough privileges, proceed with the operation
+            pass
+        elif response.status_code == 403:
+            # User does not have sufficient permissions
+            message = "Insufficient permissions to perform this operation."
+            logger.error(message)
+            return make_response(status="fail", message=message), 403
+        else:
+            # Error occurred during permission verification
+            message = "Error occurred during permission verification."
+            logger.error(message)
+            return make_response(status="fail", message=message), 500
+    except requests.exceptions.RequestException as e:
+        message = f"Error occurred while connecting to the Go-Auth server: {e}"
+        logger.error(message)
+        return make_response(status="fail", message=message), 500
+
+    # If the user is authorized, proceed with the update operation
     if not body:
         message = "Missing request body."
         logger.error(message)
