@@ -7,7 +7,7 @@
     },
     "servers": [
       {
-        "url": "https://MacBook-Pro-de-Khaled.local/appdetails-api"
+        "url": "https://${HOSTNAME}/appdetails-api"
       }
     ],
     "paths": {
