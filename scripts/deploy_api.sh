@@ -1,10 +1,8 @@
 #!/bin/bash
 
 source prepare_env.sh
-
-docker rmi -f negan/appdetails_api:local
-docker build -t negan/appdetails_api:local ../flask-app
-docker push negan/appdetails_api:local
+docker build -t negan/appdetails_api:rasp4 ../flask-app
+docker push negan/appdetails_api:rasp4
 
 docker rm -f APPDETAILS-API-LOCAL
 docker run \
@@ -18,4 +16,4 @@ docker run \
     -e AUTH_SERVER=${AUTH_SERVER} \
     -p 3500:3500 \
     --name APPDETAILS-API-LOCAL \
-    negan/appdetails_api:local
+    negan/appdetails_api:rasp4

@@ -3,9 +3,8 @@
 source prepare_env.sh
 source prepare_db_setup.sh
 
-docker rmi -f negan/appdetails_psql:local
-docker build -t negan/appdetails_psql:local ../postgresql-db
-docker push negan/appdetails_psql:local
+docker build -t negan/appdetails_psql:rasp4 ../postgresql-db
+docker push negan/appdetails_psql:rasp4
 
 docker rm -f APPDETAILS-PSQL-LOCAL
 docker run \
@@ -19,4 +18,4 @@ docker run \
     -e PSQL_PSWD=${PSQL_PSWD} \
     -p 5432:5432 \
     --name APPDETAILS-PSQL-LOCAL \
-    negan/appdetails_psql:local
+    negan/appdetails_psql:rasp4

@@ -6,7 +6,7 @@ export POSTGRES_USER=admin
 export POSTGRES_PASSWORD=admin
 
 # PSQL APPDETAILS INFO
-export PSQL_HOST=host.docker.internal #$(hostname)
+export PSQL_HOST="172.17.0.1" #host.docker.internal #$(hostname)
 export PSQL_PORT=5432
 export PSQL_DBNAME=psql_dev
 export PSQL_TABLE=app_details
